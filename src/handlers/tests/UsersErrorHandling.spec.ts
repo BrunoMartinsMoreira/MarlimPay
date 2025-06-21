@@ -2,19 +2,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import 'reflect-metadata';
 import request from 'supertest';
 import express from 'express';
-import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { IUserRepository } from '../../repositories';
 import { UsersHandler } from '../UsersHandler';
 import { ApplicationError } from '../../errors';
+import { TOKENS } from '../../server/DISetup';
 
 const mockUserRepository: jest.Mocked<IUserRepository> = {
   create: jest.fn(),
   update: jest.fn(),
   find: jest.fn(),
   findById: jest.fn(),
+  findAllTransactionsByUserId: jest.fn(),
 };
 
 const errorHandler = (
@@ -46,7 +48,7 @@ const createTestApp = () => {
   const app = express();
   app.use(express.json());
 
-  container.registerInstance('UserRepository', mockUserRepository);
+  container.registerInstance(TOKENS.UserRepository, mockUserRepository);
 
   const usersHandler = container.resolve(UsersHandler);
 

@@ -10,6 +10,7 @@ const mockUserRepository: jest.Mocked<IUserRepository> = {
   update: jest.fn(),
   find: jest.fn(),
   findById: jest.fn(),
+  findAllTransactionsByUserId: jest.fn(),
 };
 
 describe('UserService', () => {

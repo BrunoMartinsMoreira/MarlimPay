@@ -1,34 +1,44 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import 'reflect-metadata';
 import request from 'supertest';
 import express from 'express';
-import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { IUserRepository } from '../../repositories';
 import { UsersHandler } from '../UsersHandler';
 import { ApplicationError } from '../../errors';
-import { CreateUserDTO, User, UpdateUserDTO } from '../../schemas';
+import {
+  CreateUserDTO,
+  User,
+  UpdateUserDTO,
+  ListTransactionItem,
+} from '../../schemas';
 import { UserService } from '../../services';
+import { TOKENS } from '../../server/DISetup';
 
 const mockUserRepository: jest.Mocked<IUserRepository> = {
   create: jest.fn(),
   update: jest.fn(),
   find: jest.fn(),
   findById: jest.fn(),
+  findAllTransactionsByUserId: jest.fn(),
 };
 
 const createTestApp = () => {
   const app = express();
   app.use(express.json());
 
-  container.registerInstance('UserRepository', mockUserRepository);
+  container.registerInstance(TOKENS.UserRepository, mockUserRepository);
 
   const usersHandler = container.resolve(UsersHandler);
 
   app.post('/users', (req, res) => usersHandler.createUser(req, res));
   app.put('/users/:user_id', (req, res) => usersHandler.updateUser(req, res));
   app.get('/users/:user_id', (req, res) => usersHandler.getUser(req, res));
+  app.get('/users/:user_id/transactions', (req, res) =>
+    usersHandler.findAllTransactionsByUserId(req, res),
+  );
 
   return app;
 };
@@ -384,4 +394,72 @@ describe('UserHandler testes', () => {
       });
     });
   });
+
+  // ...existing code...
+
+  describe('GET /users/:user_id/transactions - Find All Transactions By UserId', () => {
+    const userId = 'user-123';
+
+    const mockTransactions: ListTransactionItem[] = [
+      {
+        transaction_id: 'tx-1',
+        direction: 'sent',
+        amount: 100,
+        status: 'approved',
+      },
+      {
+        transaction_id: 'tx-2',
+        direction: 'received',
+        amount: 100,
+        status: 'pendig',
+      },
+      {
+        transaction_id: 'tx-3',
+        direction: 'sent',
+        amount: 100,
+        status: 'failed',
+      },
+    ];
+
+    it('should return all transactions for the user', async () => {
+      mockUserRepository.findAllTransactionsByUserId.mockResolvedValue(
+        mockTransactions,
+      );
+
+      const response = await request(app).get(`/users/${userId}/transactions`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(mockTransactions);
+      expect(
+        mockUserRepository.findAllTransactionsByUserId,
+      ).toHaveBeenCalledWith(userId);
+    });
+
+    it('should return an empty array when user has no transactions', async () => {
+      mockUserRepository.findAllTransactionsByUserId.mockResolvedValue([]);
+
+      const response = await request(app).get(`/users/${userId}/transactions`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([]);
+      expect(
+        mockUserRepository.findAllTransactionsByUserId,
+      ).toHaveBeenCalledWith(userId);
+    });
+
+    it('should handle repository errors', async () => {
+      mockUserRepository.findAllTransactionsByUserId.mockRejectedValue(
+        new Error('Database error'),
+      );
+
+      const response = await request(app).get(`/users/${userId}/transactions`);
+
+      expect(response.status).toBe(500);
+      expect(
+        mockUserRepository.findAllTransactionsByUserId,
+      ).toHaveBeenCalledWith(userId);
+    });
+  });
+
+  // ...existing code...
 });
