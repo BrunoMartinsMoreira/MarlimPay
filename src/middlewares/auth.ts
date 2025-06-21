@@ -26,7 +26,7 @@ export const authMiddleware = (
     if (!isValidMockedToken(token)) {
       throw new ApplicationError('Token inválido', 401);
     }
-
+    req.userToken = token;
     next();
   } catch (error) {
     next(error);
@@ -35,8 +35,10 @@ export const authMiddleware = (
 
 const isValidMockedToken = (token: string): boolean => {
   const validTokens = [
-    'c4338945-cb15-40fa-b726-076b24cddb86',
-    '536c931b-090b-4d5c-a23f-eba452c197cb',
+    'user_token_01',
+    'user_token_02',
+    'user_token_03',
+    'user_token_04',
   ];
   return validTokens.includes(token);
 };
