@@ -23,7 +23,7 @@ export class UsersHandler {
     const dto: UpdateUserDTO = updateUserSchema.parse(req.body);
     const { user_id } = userParamsSchema.parse({ user_id: req.params.user_id });
     const user = await this.userService.updateUser(dto, user_id);
-    res.status(201).send(user);
+    res.status(200).send(user);
   }
 
   async getUser(req: Request, res: Response) {
