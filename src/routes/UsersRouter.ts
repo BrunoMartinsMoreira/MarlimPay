@@ -1,7 +1,8 @@
 import express from 'express';
 import { UsersHandler } from '../handlers';
-import { container } from 'tsyringe';
+import { container, injectable } from 'tsyringe';
 
+@injectable()
 export class UsersRouter {
   private readonly router = express.Router();
   private readonly handler = container.resolve(UsersHandler);
