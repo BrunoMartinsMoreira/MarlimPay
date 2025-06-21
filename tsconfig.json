@@ -13,9 +13,12 @@
   },
   "compileOnSave": true,
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "@types"
   ],
   "exclude": [
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "lib",
+    "node_modules"
   ]
 }
