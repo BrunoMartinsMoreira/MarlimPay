@@ -2,11 +2,12 @@ import { CreateUserDTO, UpdateUserDTO, User } from '../schemas';
 import { ApplicationError } from '../errors';
 import { inject, injectable } from 'tsyringe';
 import { IUserRepository } from '../repositories';
+import { TOKENS } from '../server/DISetup';
 
 @injectable()
 export class UserService {
   constructor(
-    @inject('UserRepository')
+    @inject(TOKENS.UserRepository)
     private readonly usersRepository: IUserRepository,
   ) {}
 
