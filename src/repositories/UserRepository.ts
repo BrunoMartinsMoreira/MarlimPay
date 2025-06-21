@@ -19,7 +19,7 @@ export class UserRepository implements IUserRepository {
   }
 
   async update(dto: UpdateUserDTO, id: string): Promise<User> {
-    await this.db.collection('users').doc(id).set(dto);
+    await this.db.collection('users').doc(id).update(dto);
     const updatedUser = await this.findById(id);
 
     return updatedUser;
