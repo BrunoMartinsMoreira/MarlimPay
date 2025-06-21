@@ -1,0 +1,20 @@
+{
+  "preset": "ts-jest",
+  "roots": ["<rootDir>"],
+  "coverageReporters": ["text", "lcov", "html"],
+  "testTimeout": 10000,
+  "verbose": true,
+  "clearMocks": true,
+  "restoreMocks": true,
+  "testPathIgnorePatterns": ["/node_modules/", "/lib/"],
+  "coveragePathIgnorePatterns": ["/node_modules/", "/lib/"],
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "src",
+  "testRegex": ".*\\.spec\\.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "collectCoverageFrom": ["**/*.(t|j)s"],
+  "coverageDirectory": "../coverage",
+  "testEnvironment": "node"
+}
