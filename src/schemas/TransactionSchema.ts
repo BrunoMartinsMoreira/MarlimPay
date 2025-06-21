@@ -61,7 +61,7 @@ export type Transaction = CreateTransactionDTO & CreateTransactionResult;
 export type WebhookDTO = z.infer<typeof webhoohSchema>;
 
 export type ListTransactionItem = {
-  transaction_id: 'txn_abc123';
+  transaction_id: string;
   direction: 'sent' | 'received';
   amount: number;
   status: TransactionStatus;
