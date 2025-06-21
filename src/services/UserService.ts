@@ -44,4 +44,10 @@ export class UserService {
 
     return user;
   }
+
+  async findAllTransactionsByUserId(user_id: string) {
+    const transactions =
+      await this.usersRepository.findAllTransactionsByUserId(user_id);
+    return transactions;
+  }
 }
