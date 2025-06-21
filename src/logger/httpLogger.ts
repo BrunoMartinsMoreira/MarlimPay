@@ -1,7 +1,6 @@
 import pinoHttp, { Options } from 'pino-http';
 import { IncomingMessage, ServerResponse } from 'http';
 import { logger } from './logger';
-import { Request, Response } from 'express';
 
 export const httpLogger = pinoHttp({
   logger,
@@ -15,23 +14,21 @@ export const httpLogger = pinoHttp({
     res: ServerResponse,
     rs: number,
   ): string {
-    return `${req.method} ${req.url} - ${res.statusCode} - ${rs.toFixed(2)}ms`;
+    return `${req.method} ${req.baseUrl} - ${res.statusCode} - ${rs.toFixed(2)}ms`;
   },
   customErrorMessage(
     req: IncomingMessage,
     res: ServerResponse,
     err: Error,
   ): string {
-    return `${req.method} ${req.url} - ${res.statusCode} - ERROR: ${err.message}`;
+    return `${req.method} ${req.baseUrl} - ${res.statusCode} - ERROR: ${err.message}`;
   },
   serializers: {
-    req(req: Request) {
-      return { id: req.id, url: req.url, method: req.method };
+    req() {
+      return;
     },
-    res(res: Response) {
-      return {
-        status: res.statusCode,
-      };
+    res() {
+      return;
     },
     responseTime() {
       return;
