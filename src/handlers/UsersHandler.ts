@@ -31,4 +31,12 @@ export class UsersHandler {
     const user = await this.userService.findUser(user_id);
     res.status(200).send(user);
   }
+
+  async findAllTransactionsByUserId(req: Request, res: Response) {
+    const { user_id } = userParamsSchema.parse({ user_id: req.params.user_id });
+
+    const transactions =
+      await this.userService.findAllTransactionsByUserId(user_id);
+    res.status(200).send(transactions);
+  }
 }
