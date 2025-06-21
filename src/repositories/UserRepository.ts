@@ -1,10 +1,15 @@
-import { injectable, singleton } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { getFirestore } from 'firebase-admin/firestore';
-import { CreateUserDTO, User, UpdateUserDTO } from '../schemas';
+import {
+  CreateUserDTO,
+  User,
+  UpdateUserDTO,
+  ListTransactionItem,
+  Transaction,
+} from '../schemas';
 import { IUserRepository } from './Contracts/IUserRepository';
 
 @injectable()
-@singleton()
 export class UserRepository implements IUserRepository {
   private readonly db = getFirestore();
 
@@ -47,5 +52,40 @@ export class UserRepository implements IUserRepository {
       user_id: doc.id,
       ...doc.data(),
     } as User;
+  }
+
+  async findAllTransactionsByUserId(
+    user_id: string,
+  ): Promise<ListTransactionItem[]> {
+    const [payerSnap, receiverSnap] = await Promise.all([
+      this.db.collection('transactions').where('payer_id', '==', user_id).get(),
+      this.db
+        .collection('transactions')
+        .where('receiver_id', '==', user_id)
+        .get(),
+    ]);
+    const transactionsMap = new Map<string, ListTransactionItem>();
+
+    payerSnap.forEach((doc) => {
+      const transaction = doc.data() as Transaction;
+      transactionsMap.set(doc.id, {
+        amount: transaction.amount,
+        direction: 'sent',
+        status: transaction.status,
+        transaction_id: doc.id,
+      } as ListTransactionItem);
+    });
+
+    receiverSnap.forEach((doc) => {
+      const transaction = doc.data() as Transaction;
+      transactionsMap.set(doc.id, {
+        amount: transaction.amount,
+        direction: 'received',
+        status: transaction.status,
+        transaction_id: doc.id,
+      } as ListTransactionItem);
+    });
+
+    return Array.from(transactionsMap.values());
   }
 }
