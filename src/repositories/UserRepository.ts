@@ -30,6 +30,10 @@ export class UserRepository implements IUserRepository {
     return updatedUser;
   }
 
+  async updateUserAmount(amount: number, user_id: string) {
+    await this.db.collection('users').doc(user_id).update({ amount });
+  }
+
   async find(key: 'name' | 'email', value: string): Promise<User | null> {
     const snapshot = await this.db
       .collection('users')

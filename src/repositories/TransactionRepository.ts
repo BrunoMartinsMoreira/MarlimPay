@@ -142,4 +142,14 @@ export class TransactionRepository implements ITransactionRepository {
       transaction_id: transactionSnap.id,
     };
   }
+
+  async updateTransactionStatus(
+    transaction_id: string,
+    status: 'approved' | 'failed',
+  ): Promise<void> {
+    await this.db
+      .collection('transactions')
+      .doc(transaction_id)
+      .update({ status });
+  }
 }

@@ -17,4 +17,8 @@ export interface ITransactionRepository {
     idempotencyKey: string,
   ): Promise<CreateTransactionResult>;
   findTransactionById(transaction_id: string): Promise<Transaction>;
+  updateTransactionStatus(
+    transaction_id: string,
+    status: 'approved' | 'failed',
+  ): Promise<void>;
 }
