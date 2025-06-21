@@ -19,6 +19,9 @@ export class UsersRouter {
 
   private get() {
     this.router.get('/:user_id', (req, res) => this.handler.getUser(req, res));
+    this.router.get('/:user_id/transactions', (req, res) =>
+      this.handler.findAllTransactionsByUserId(req, res),
+    );
   }
 
   run() {
