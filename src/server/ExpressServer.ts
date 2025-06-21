@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -5,6 +6,7 @@ import { Router } from '../routes';
 import { logger, httpLogger } from '../logger';
 import { globalErrorHandler, notFoundMiddleware } from '../middlewares';
 import { authMiddleware } from '../middlewares/auth';
+import { DISetup } from './DISetup';
 
 export class ExpressServer {
   private readonly app: express.Express;
@@ -12,6 +14,7 @@ export class ExpressServer {
 
   constructor() {
     this.app = express();
+    DISetup();
     this.router = new Router();
   }
 
@@ -23,7 +26,6 @@ export class ExpressServer {
     this.app.use(authMiddleware);
     this.app.use(this.router.run());
     this.app.use(notFoundMiddleware);
-
     this.app.use(globalErrorHandler as express.ErrorRequestHandler);
   }
 

@@ -1,31 +1,23 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { UsersHandler } from '../handlers';
+import { container } from 'tsyringe';
 
 export class UsersRouter {
-  private router: express.Router;
-  private readonly usersHandler: UsersHandler;
-
-  constructor() {
-    this.router = express.Router();
-    this.usersHandler = new UsersHandler();
-  }
+  private readonly router = express.Router();
+  private readonly handler = container.resolve(UsersHandler);
 
   private post() {
-    this.router.post('/', (req: Request, res: Response) =>
-      this.usersHandler.createUser(req, res),
-    );
+    this.router.post('/', (req, res) => this.handler.createUser(req, res));
   }
 
   private put() {
-    this.router.put('/:user_id', (req: Request, res: Response) =>
-      this.usersHandler.updateUser(req, res),
+    this.router.put('/:user_id', (req, res) =>
+      this.handler.updateUser(req, res),
     );
   }
 
   private get() {
-    this.router.get('/:user_id', (req: Request, res: Response) =>
-      this.usersHandler.getUser(req, res),
-    );
+    this.router.get('/:user_id', (req, res) => this.handler.getUser(req, res));
   }
 
   run() {
