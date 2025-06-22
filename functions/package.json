@@ -10,11 +10,13 @@
     "build:dev": "tsc --watch",
     "start:dev": "npm run build && firebase emulators:start --only functions",
     "deploy": "npm run build && firebase deploy --only functions",
+    "deploy:hosting": "npm run copy:swagger-ui && firebase deploy --only hosting",
     "logs": "firebase functions:log",
     "lint:fix": "npx eslint ./src/** --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "copy:swagger-ui": "node scripts/copy-swagger.js"
   },
   "engines": {
     "node": "20"
@@ -41,22 +43,23 @@
     "pino-http": "^10.5.0",
     "pino-pretty": "^13.0.0",
     "reflect-metadata": "^0.2.2",
+    "swagger-ui-dist": "^5.25.2",
     "swagger-ui-express": "^5.0.1",
     "tsyringe": "^4.10.0",
     "zod": "^3.25.67"
   },
   "devDependencies": {
+    "fs-extra": "^11.3.0",
     "@eslint/js": "^9.11.1",
-    "@types/eslint__js": "^8.42.3",
-    "eslint": "^9.11.1",
-    "typescript-eslint": "^8.8.0",
     "@types/cors": "^2.8.19",
+    "@types/eslint__js": "^8.42.3",
     "@types/express": "^5.0.3",
     "@types/express-rate-limit": "^5.1.3",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.13.14",
     "@types/supertest": "^6.0.3",
     "@types/swagger-ui-express": "^4.1.8",
+    "eslint": "^9.11.1",
     "firebase-functions-test": "^3.1.0",
     "globals": "^16.2.0",
     "jest": "^30.0.2",
@@ -64,7 +67,8 @@
     "supertest": "^7.1.1",
     "ts-jest": "^29.4.0",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.8.0"
   },
   "private": true
 }
