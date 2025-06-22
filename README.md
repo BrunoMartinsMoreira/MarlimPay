@@ -6,13 +6,14 @@ MarlimPay é uma API RESTful para gerenciamento de usuários e transações fina
 
 ## 📑 Índice
 
-- [Como rodar o projeto](#-como-rodar-o-projeto)
-- [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Idempotência](#-idempotência)
-- [Rate Limit](#-rate-limit)
-- [Rotas Disponíveis](#-rotas-disponíveis)
-- [Funcionalidades](#-funcionalidades)
-- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [📖 Documentação com swagger](https://marlimpay.web.app/docs/)
+- [📦 Como rodar o projeto](#-como-rodar-o-projeto)
+- [📁 Estrutura do Projeto](#-estrutura-do-projeto)
+- [🔑 Idempotência](#-idempotência)
+- [🚦 Rate Limit](#-rate-limit)
+- [🗺️ Rotas Disponíveis](#-rotas-disponíveis)
+- [🛠️ Funcionalidades](#-funcionalidades)
+- [🚀 Tecnologias Utilizadas](#-tecnologias-utilizadas)
 
 ---
 
@@ -125,7 +126,7 @@ A API MarlimPay utiliza um mecanismo de rate limiting para proteger o sistema co
 
 ---
 
-## 📚 Rotas Disponíveis
+## 🗺️ Rotas Disponíveis
 
 **_TODAS AS ROTAS SÃO AUTENTICADAS_** com `Bearer token`
 
