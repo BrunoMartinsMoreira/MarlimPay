@@ -4,11 +4,14 @@ import {
   UserRepository,
   ITransactionRepository,
   TransactionRepository,
+  IWebhookEventsRepository,
+  WebhookEventsRepository,
 } from '../repositories';
 
 export const TOKENS = {
   UserRepository: Symbol('UserRepository'),
   TransactionRepository: Symbol('TransactionRepository'),
+  WebhookEventsRepository: Symbol('WebhookEventsRepository'),
 } as const;
 
 export function DISetup() {
@@ -19,5 +22,9 @@ export function DISetup() {
   container.register<ITransactionRepository>(
     TOKENS.TransactionRepository,
     TransactionRepository,
+  );
+  container.register<IWebhookEventsRepository>(
+    TOKENS.WebhookEventsRepository,
+    WebhookEventsRepository,
   );
 }
