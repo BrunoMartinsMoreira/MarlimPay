@@ -4,6 +4,16 @@ MarlimPay é uma API RESTful para gerenciamento de usuários e transações fina
 
 ---
 
+## 📑 Índice
+
+- [Como rodar o projeto](#-como-rodar-o-projeto)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Idempotência](#-idempotência)
+- [Rate Limit](#-rate-limit)
+- [Rotas Disponíveis](#-rotas-disponíveis)
+- [Funcionalidades](#-funcionalidades)
+- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+
 ---
 
 ## 📦 Como rodar o projeto
