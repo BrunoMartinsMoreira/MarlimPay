@@ -32,11 +32,14 @@ export class UserService {
     }
 
     const updatedUser = await this.usersRepository.update(data, id);
+    if (!updatedUser) {
+      throw new ApplicationError('Usuario invalido', 404);
+    }
     return updatedUser;
   }
 
   async findUser(id: string): Promise<User> {
-    const user: User = await this.usersRepository.findById(id);
+    const user = await this.usersRepository.findById(id);
 
     if (!user) {
       throw new ApplicationError('Usuario não localizado!', 404);
