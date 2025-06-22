@@ -1,4 +1,3 @@
- 
 import 'reflect-metadata';
 import { ApplicationError } from '../../errors';
 import { IUserRepository } from '../../repositories';
@@ -11,7 +10,7 @@ const mockUserRepository: jest.Mocked<IUserRepository> = {
   find: jest.fn(),
   findById: jest.fn(),
   findAllTransactionsByUserId: jest.fn(),
-  updateUserAmount: jest.fn(),
+  updateUserBalance: jest.fn(),
 };
 
 describe('UserService', () => {

@@ -20,7 +20,7 @@ const mockUserRepository: jest.Mocked<IUserRepository> = {
   find: jest.fn(),
   findById: jest.fn(),
   findAllTransactionsByUserId: jest.fn(),
-  updateUserAmount: jest.fn(),
+  updateUserBalance: jest.fn(),
 };
 
 const createTestApp = () => {

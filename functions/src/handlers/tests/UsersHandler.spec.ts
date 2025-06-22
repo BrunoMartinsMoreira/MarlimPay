@@ -1,6 +1,3 @@
- 
- 
- 
 import 'reflect-metadata';
 import request from 'supertest';
 import express from 'express';
@@ -23,7 +20,7 @@ const mockUserRepository: jest.Mocked<IUserRepository> = {
   find: jest.fn(),
   findById: jest.fn(),
   findAllTransactionsByUserId: jest.fn(),
-  updateUserAmount: jest.fn(),
+  updateUserBalance: jest.fn(),
 };
 
 const createTestApp = () => {
