@@ -31,8 +31,8 @@ export class UserRepository implements IUserRepository {
     return updatedUser;
   }
 
-  async updateUserAmount(amount: number, user_id: string) {
-    await this.db.collection('users').doc(user_id).update({ amount });
+  async updateUserBalance(balance: number, user_id: string) {
+    await this.db.collection('users').doc(user_id).update({ balance });
   }
 
   async find(key: 'name' | 'email', value: string): Promise<User | null> {

@@ -56,11 +56,11 @@ export class WebhookService {
         const logDetail = `Trasanção falhou valor ${amount} devolvido ao pagador ${payer_id} - ${payer.name}`;
 
         await Promise.all([
-          this.usersRepository.updateUserAmount(
+          this.usersRepository.updateUserBalance(
             payer.balance + amount,
             payer_id,
           ),
-          this.usersRepository.updateUserAmount(
+          this.usersRepository.updateUserBalance(
             receiver.balance - amount,
             receiver_id,
           ),
