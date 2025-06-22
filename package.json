@@ -6,8 +6,9 @@
   "scripts": {
     "lint": "npx eslint ./src/**",
     "lint:fix": "npx eslint ./src/** --fix",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "start:dev": "tsc-watch --onSuccess \"node --env-file=.env ./lib/index.js\" --onFailure \"echo Error on app startup!\"",
+    "start:prod": "node lib/index.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
