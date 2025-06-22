@@ -8,20 +8,22 @@ MarlimPay é uma API RESTful para gerenciamento de usuários e transações fina
 
 ## 📦 Como rodar o projeto
 
-1. Instale as dependências:
+1. Navegue até o diretório functions:
+
+```bash
+   cd functions
+```
+
+2. Instale as dependências:
 
    ```bash
    npm install
    ```
 
-2. Configure as credenciais do Firebase Admin SDK.
-
-- crie um arquivo `.env` com o valor `GOOGLE_APPLICATION_CREDENTIALS` apontando para o path das credencias do firebase
-
 3. Rode a aplicação:
 
    ```bash
-   npm run dev
+   npm run start:dev
    ```
 
 4. Execute os testes:
@@ -69,6 +71,7 @@ src/
 - **TypeScript**
 - **Express**
 - **Firebase Admin SDK**
+- **Firebase Functions**
 - **Zod** (validação de schemas)
 - **tsyringe** (Injeção de dependência)
 - **Pino** (logger)
