@@ -39,6 +39,7 @@ const isValidMockedToken = (token: string): boolean => {
     'user_token_02',
     'user_token_03',
     'user_token_04',
+    'user_token_05',
   ];
   return validTokens.includes(token);
 };
