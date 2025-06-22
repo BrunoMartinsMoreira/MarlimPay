@@ -16,7 +16,7 @@ export interface ITransactionRepository {
     data: CreateTransactionDTO,
     idempotencyKey: string,
   ): Promise<CreateTransactionResult>;
-  findTransactionById(transaction_id: string): Promise<Transaction>;
+  findTransactionById(transaction_id: string): Promise<Transaction | null>;
   updateTransactionStatus(
     transaction_id: string,
     status: 'approved' | 'failed',

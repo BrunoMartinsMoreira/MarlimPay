@@ -117,17 +117,21 @@ export class TransactionRepository implements ITransactionRepository {
     const transactionCreated = await this.findTransactionById(result.id);
 
     return {
-      status: transactionCreated.status,
-      created_at: transactionCreated.created_at,
+      status: transactionCreated!.status,
+      created_at: transactionCreated!.created_at,
       transaction_id: result.id,
     } as CreateTransactionResult;
   }
 
-  async findTransactionById(transaction_id: string): Promise<Transaction> {
+  async findTransactionById(
+    transaction_id: string,
+  ): Promise<Transaction | null> {
     const transactionSnap = await this.db
       .collection('transactions')
       .doc(transaction_id)
       .get();
+
+    if (!transactionSnap.exists) return null;
 
     const transactionData = transactionSnap.data() as CreateTransactionDTO & {
       created_at: FirebaseFirestore.Timestamp;

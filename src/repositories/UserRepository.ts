@@ -1,4 +1,4 @@
-import { injectable } from 'tsyringe';
+import { injectable, singleton } from 'tsyringe';
 import { getFirestore } from 'firebase-admin/firestore';
 import {
   CreateUserDTO,
@@ -10,6 +10,7 @@ import {
 import { IUserRepository } from './Contracts/IUserRepository';
 
 @injectable()
+@singleton()
 export class UserRepository implements IUserRepository {
   private readonly db = getFirestore();
 
@@ -23,7 +24,7 @@ export class UserRepository implements IUserRepository {
     } as User;
   }
 
-  async update(dto: UpdateUserDTO, id: string): Promise<User> {
+  async update(dto: UpdateUserDTO, id: string): Promise<User | null> {
     await this.db.collection('users').doc(id).update(dto);
     const updatedUser = await this.findById(id);
 
@@ -49,8 +50,9 @@ export class UserRepository implements IUserRepository {
     return { user_id: doc.id, ...doc.data() } as User;
   }
 
-  async findById(user_id: string): Promise<User> {
+  async findById(user_id: string): Promise<User | null> {
     const doc = await this.db.collection('users').doc(user_id).get();
+    if (!doc.exists) return null;
 
     return {
       user_id: doc.id,
