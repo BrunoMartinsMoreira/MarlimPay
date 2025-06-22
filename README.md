@@ -6,7 +6,8 @@ MarlimPay é uma API RESTful para gerenciamento de usuários e transações fina
 
 ## 📑 Índice
 
-- [📖 Documentação com swagger](https://marlimpay.web.app/docs/)
+- <a href="https://marlimpay.web.app/docs/" target="_blank" rel="noopener noreferrer">📖 Documentação com swagger</a>
+
 - [📦 Como rodar o projeto](#-como-rodar-o-projeto)
 - [📁 Estrutura do Projeto](#-estrutura-do-projeto)
 - [🔑 Idempotência](#-idempotência)
