@@ -1,0 +1,63 @@
+name: CI/CD para API Node.js (Cloud Functions) e Hosting
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar Dependências
+        run: npm ci
+        working-directory: functions/
+
+      - name: Executar Linter (npm run lint)
+        run: npm run lint
+        working-directory: functions/
+
+      - name: Executar Testes (npm run test)
+        run: npm run test
+        working-directory: functions/
+
+      - name: Compilar Projeto TypeScript (npm run build)
+        run: npm run build
+        working-directory: functions/
+      
+      - name: Compilar Projeto TypeScript (npm run build)
+        run: npm prune --omit=dev
+        working-directory: functions/
+
+      - name: Autenticar no Google Cloud (para Cloud Functions)
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Fazer Deploy do Cloud Function
+        id: deploy-function
+        uses: google-github-actions/deploy-cloud-functions@v0.1.0
+        with:
+          name: api
+          runtime: nodejs20
+          project_id: marlimpay
+          source_dir: dist
+          entry_point: lib
+
+      - name: Instalar Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Executar Pós-Deploy de Hosting (npm run deploy:hosting)
+        run: npm run deploy:hosting
+        working-directory: functions/
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
