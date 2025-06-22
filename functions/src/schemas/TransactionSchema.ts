@@ -1,16 +1,21 @@
 import { z } from 'zod';
 
-export const transactionSchema = z.object({
-  payer_id: z
-    .string({ required_error: 'payer_id é obrigatório' })
-    .min(1, 'payer_id é obrigatório'),
-  receiver_id: z
-    .string({ required_error: 'receiver_id é obrigatório' })
-    .min(1, 'receiver_id é obrigatório'),
-  amount: z
-    .number({ required_error: 'amount é obrigatório' })
-    .positive('amount deve ser maior que zero'),
-});
+export const transactionSchema = z
+  .object({
+    payer_id: z
+      .string({ required_error: 'payer_id é obrigatório' })
+      .min(1, 'payer_id é obrigatório'),
+    receiver_id: z
+      .string({ required_error: 'receiver_id é obrigatório' })
+      .min(1, 'receiver_id é obrigatório'),
+    amount: z
+      .number({ required_error: 'amount é obrigatório' })
+      .positive('amount deve ser maior que zero'),
+  })
+  .refine((data) => data.payer_id !== data.receiver_id, {
+    message: 'payer_id e receiver_id devem ser diferentes',
+    path: ['receiver_id'],
+  });
 
 export const idempotencyKeyHeaderSchema = z
   .string({
