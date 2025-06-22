@@ -11,16 +11,12 @@
     "esModuleInterop": true,
     "noUnusedLocals": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
   },
   "compileOnSave": true,
   "include": [
     "src/**/*",
     "@types"
   ],
-  "exclude": [
-    "**/*.spec.ts",
-    "lib",
-    "node_modules"
-  ]
 }
