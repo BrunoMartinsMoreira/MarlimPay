@@ -1,1 +1,1 @@
-export * from './HttpHandler';
+export * from './UsersHandler';

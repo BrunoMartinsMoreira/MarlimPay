@@ -1,3 +1,6 @@
-import { HttpHandler } from './handlers';
+import { initializeApp } from 'firebase-admin/app';
+import { ExpressServer } from './server/ExpressServer';
 
-new HttpHandler().getApp();
+initializeApp();
+const server = new ExpressServer();
+server.run();
