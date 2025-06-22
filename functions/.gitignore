@@ -137,3 +137,4 @@ dist
 
 /lib
 firebase-credential.json
+/public/docs/swagger/

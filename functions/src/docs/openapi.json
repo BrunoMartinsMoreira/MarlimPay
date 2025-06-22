@@ -5,6 +5,24 @@
     "version": "1.0.0",
     "description": "API para gerenciamento de usuários e transações financeiras com idempotência."
   },
+  "tags": [
+    {
+      "name": "Autenticação",
+      "description": "## Tokens Mockados para Testes\n\nUtilize um dos tokens abaixo no campo 'Authorize' do Swagger UI:\n\n- `user_token_01`\n- `user_token_02`\n- `user_token_03`\n- `user_token_04`\n- `user_token_05`\n\n> Estes tokens são apenas para uso em ambiente de desenvolvimento."
+    },
+    {
+      "name": "Usuários",
+      "description": "Operações relacionadas ao gerenciamento de usuários"
+    },
+    {
+      "name": "Transações",
+      "description": "Operações relacionadas ao gerenciamento de transações"
+    },
+    {
+      "name": "Webhook",
+      "description": "Endpoints para recebimento de webhooks"
+    }
+  ],
   "security": [
     {
       "bearerAuth": []
@@ -13,7 +31,13 @@
   "paths": {
     "/users": {
       "post": {
+        "tags": ["Usuários"],
         "summary": "Cria um novo usuário",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -92,7 +116,13 @@
     },
     "/users/{user_id}": {
       "get": {
+        "tags": ["Usuários"],
         "summary": "Busca usuário por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -100,7 +130,8 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID único do usuário"
           }
         ],
         "responses": {
@@ -110,6 +141,24 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token de autorização inválido ou ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Token de autorização necessário"
                 }
               }
             }
@@ -135,7 +184,13 @@
         }
       },
       "put": {
+        "tags": ["Usuários"],
         "summary": "Atualiza dados do usuário",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -143,7 +198,8 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID único do usuário"
           }
         ],
         "requestBody": {
@@ -163,6 +219,24 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token de autorização inválido ou ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Token de autorização necessário"
                 }
               }
             }
@@ -208,7 +282,13 @@
     },
     "/users/{user_id}/transactions": {
       "get": {
+        "tags": ["Transações"],
         "summary": "Lista todas as transações do usuário (como pagador ou recebedor)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -216,7 +296,8 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID único do usuário"
           }
         ],
         "responses": {
@@ -232,12 +313,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Token de autorização inválido ou ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Token de autorização necessário"
+                }
+              }
+            }
           }
         }
       }
     },
     "/transactions/idempotency": {
       "post": {
+        "tags": ["Transações"],
         "summary": "Gera ou retorna uma chave de idempotência para o usuário",
         "security": [
           {
@@ -253,15 +353,41 @@
                   "type": "object",
                   "properties": {
                     "key": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Chave de idempotência única"
                     },
                     "status": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Status da chave (new/existing)"
                     },
                     "userToken": {
+                      "type": "string",
+                      "description": "Token do usuário associado"
+                    }
+                  }
+                },
+                "example": {
+                  "key": "550e8400-e29b-41d4-a716-446655440000",
+                  "status": "new",
+                  "userToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mockuser1"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token de autorização inválido ou ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
                       "type": "string"
                     }
                   }
+                },
+                "example": {
+                  "message": "Token de autorização necessário"
                 }
               }
             }
@@ -271,7 +397,13 @@
     },
     "/transactions": {
       "post": {
+        "tags": ["Transações"],
         "summary": "Cria uma nova transação entre usuários",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "header",
@@ -279,7 +411,8 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "Chave de idempotência para evitar transações duplicadas"
           }
         ],
         "requestBody": {
@@ -299,6 +432,24 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token de autorização inválido ou ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Token de autorização necessário"
                 }
               }
             }
@@ -362,7 +513,13 @@
     },
     "/transactions/{transaction_id}": {
       "get": {
+        "tags": ["Transações"],
         "summary": "Busca uma transação pelo ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -370,7 +527,8 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID único da transação"
           }
         ],
         "responses": {
@@ -380,6 +538,24 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token de autorização inválido ou ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Token de autorização necessário"
                 }
               }
             }
@@ -407,7 +583,13 @@
     },
     "/webhook": {
       "post": {
+        "tags": ["Webhook"],
         "summary": "Atualiza o status de uma transação via webhook",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -442,23 +624,28 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Forneça um dos tokens válidos no header Authorization no formato: Bearer <token>"
+      }
+    },
     "schemas": {
-      "securitySchemes": {
-        "bearerAuth": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
-        }
-      },
       "CreateUserDTO": {
         "type": "object",
         "required": ["name", "email"],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Nome completo do usuário",
+            "example": "João Silva"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "format": "email",
+            "description": "Email único do usuário",
+            "example": "joao.silva@email.com"
           }
         }
       },
@@ -466,10 +653,15 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Nome completo do usuário",
+            "example": "João Santos Silva"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "format": "email",
+            "description": "Email único do usuário",
+            "example": "joao.santos@email.com"
           }
         }
       },
@@ -477,16 +669,26 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "ID único do usuário",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Nome completo do usuário",
+            "example": "João Silva"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "format": "email",
+            "description": "Email único do usuário",
+            "example": "joao.silva@email.com"
           },
           "balance": {
-            "type": "number"
+            "type": "number",
+            "format": "decimal",
+            "description": "Saldo atual do usuário",
+            "example": 1500.5
           }
         }
       },
@@ -495,13 +697,21 @@
         "required": ["payer_id", "receiver_id", "amount"],
         "properties": {
           "payer_id": {
-            "type": "string"
+            "type": "string",
+            "description": "ID do usuário que está fazendo o pagamento",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           },
           "receiver_id": {
-            "type": "string"
+            "type": "string",
+            "description": "ID do usuário que irá receber o pagamento",
+            "example": "650e8400-e29b-41d4-a716-446655440001"
           },
           "amount": {
-            "type": "number"
+            "type": "number",
+            "format": "decimal",
+            "minimum": 0.01,
+            "description": "Valor da transação",
+            "example": 100.5
           }
         }
       },
@@ -509,23 +719,37 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "ID único da transação",
+            "example": "750e8400-e29b-41d4-a716-446655440002"
           },
           "payer_id": {
-            "type": "string"
+            "type": "string",
+            "description": "ID do usuário que fez o pagamento",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
           },
           "receiver_id": {
-            "type": "string"
+            "type": "string",
+            "description": "ID do usuário que recebeu o pagamento",
+            "example": "650e8400-e29b-41d4-a716-446655440001"
           },
           "amount": {
-            "type": "number"
+            "type": "number",
+            "format": "decimal",
+            "description": "Valor da transação",
+            "example": 100.5
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "enum": ["pending", "approved", "failed"],
+            "description": "Status atual da transação",
+            "example": "approved"
           },
           "createdAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Data e hora de criação da transação",
+            "example": "2024-01-15T10:30:00Z"
           }
         }
       },
@@ -534,11 +758,15 @@
         "required": ["transaction_id", "status"],
         "properties": {
           "transaction_id": {
-            "type": "string"
+            "type": "string",
+            "description": "ID da transação a ser atualizada",
+            "example": "750e8400-e29b-41d4-a716-446655440002"
           },
           "status": {
             "type": "string",
-            "enum": ["approved", "failed"]
+            "enum": ["approved", "failed"],
+            "description": "Novo status da transação",
+            "example": "approved"
           }
         }
       }
