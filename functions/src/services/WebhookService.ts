@@ -36,6 +36,8 @@ export class WebhookService {
         return;
       }
 
+      if (transaction.status !== 'pendig') return;
+
       await this.transactionsRepository.updateTransactionStatus(
         transaction_id,
         status,
