@@ -10,9 +10,9 @@ MarlimPay é uma API RESTful para gerenciamento de usuários e transações fina
 
 1. Navegue até o diretório functions:
 
-```bash
-   cd functions
-```
+   ```bash
+    cd ./functions
+   ```
 
 2. Instale as dependências:
 
@@ -63,21 +63,49 @@ src/
 └── index.ts               # Entry point da aplicação
 ```
 
+## 🔑 Idempotência
+
+A API MarlimPay implementa um mecanismo de idempotência para garantir que operações críticas, como a criação de transações, não sejam executadas múltiplas vezes acidentalmente.
+
+### Como funciona
+
+- Cada usuário pode gerar uma única chave de idempotência (`Idempotency-Key`) com status `active`.
+- Se o usuário tentar gerar uma nova chave sem utilizar a anterior, a chave ativa existente será retornada — não é criada uma nova chave até que a anterior seja utilizada.
+- Para criar uma transação, é obrigatório enviar a `Idempotency-Key` no header da requisição.
+- Após a criação bem-sucedida de uma transação, a chave utilizada tem seu status atualizado para `finished`, permitindo que o usuário gere uma nova chave para futuras operações.
+- Para gerar uma chave o usuário deve fazer uma requisição autenticada com algum dos tokens validos logo abaixo para
+
+  ```bash
+  POST: /transactions/idempotency
+  ```
+
+**Resumo do fluxo:**
+
+1. Usuário solicita uma chave de idempotência (`POST: /transactions/idempotency`) → recebe uma chave `active`.
+2. Usuário pode usar essa chave para criar uma transação.
+3. Se tentar gerar outra chave sem usar a anterior, recebe a mesma chave `active`.
+4. Após criar a transação, a chave é marcada como `finished`.
+5. Agora, o usuário pode solicitar e receber uma nova chave de idempotência.
+
 ---
 
-## 🚀 Tecnologias Utilizadas
+## 🚦 Rate Limit
 
-- **Node.js**
-- **TypeScript**
-- **Express**
-- **Firebase Admin SDK**
-- **Firebase Functions**
-- **Zod** (validação de schemas)
-- **tsyringe** (Injeção de dependência)
-- **Pino** (logger)
-- **express-rate-limit** (rate limiting)
-- **Jest** (testes unitários e de integração)
-- **supertest** (testes de rotas HTTP)
+A API MarlimPay utiliza um mecanismo de rate limiting para proteger o sistema contra abusos e garantir a estabilidade dos serviços.
+
+### Como funciona
+
+- A rota de criação de transações possui um limite de até **5 transações por minuto** por usuário.
+- O controle é feito utilizando o middleware `express-rate-limit`.
+- **Toda tentativa de criar uma transação conta para o limite**, independentemente de a transação ser bem-sucedida ou falhar.
+
+**Resumo do fluxo:**
+
+1. O usuário pode tentar criar até 5 transações em um intervalo de 1 minuto.
+2. Se exceder esse limite, novas tentativas serão bloqueadas temporariamente.
+3. Tentativas que resultam em erro também são contabilizadas no limite.
+
+---
 
 ## 📚 Rotas Disponíveis
 
@@ -91,25 +119,49 @@ src/
   - `user_token_05`
 - **POST** `/users`
   - Cadastra um novo usuario
+  - BODY:
+  ```bash
+  {
+   "name": "string",
+   "email": "string",
+   "balance": "number positivo"
+  }
+  ```
 - **GET** `/users/{user_id}`
   - Busca um usuario pelo seu id
 - **PUT** `/users/{user_id}`
   - Atualiza os dados do usuario (somente name e email)
+  - BODY:
+  ```bash
+   {
+    "name": "string",
+    "email": "string",
+   }
+  ```
 - **GET** `/users/{user_id}/transactions`
   - Retorna todas as transações onde um usuario é `payer`ou `receiver`
 - **POST** `/transactions/idempotency`
-  - Rota responsável por criar o fluxo de idempotencia:
-  - Usuario gera uma `Idempotency-Key` com status `active`, e cada usuario só pode ter uma chave `active`;
-  - Caso o usuario tente gerar novamente uma nova chave ser usar a anterior e retornada a chave ativa que ele possui e não é criada outra;
-  - Para criar uma transação deve ser enviado nos headers a `Idempotency-Key` gerada;
-  - Apos a criação com sucesso de uma transação a chave utilizada é atualizada para status `finished` e o usuário pode solicitar outra
+  - Rota responsável por criar e retornar o token de idempotencia;
 - **POST** `/transactions`
-  - Rota com rate-limit usando `express-rate-limiter`:
-  - Usuario pode fazer no maximo 5 transações por minuto;
-  - Caso uma transação falhe ainda sim é considerado como uma tentativa válida
+  - Cria uma nova transação
+  - BODY esperado:
+  ```bash
+   {
+    "payer_id": "string",
+    "receiver_id": "string",
+    "amount": "number positivo"
+   }
+  ```
 - **GET** `/transactions/{transaction_id}`
   - Retorna uma transation pelo seu id
 - **POST** `/webhook`
+  - BODY esperado:
+  ```bash
+  {
+   "transaction_id": "string",
+   "status": "approved" | "failed"
+  }
+  ```
   - Atualiza o status de uma transação para `sucess`ou `failed`
   - Caso o status seja `failed` o valor e devolvido ao pagador
   - Logs salvos no `firestore`
@@ -124,3 +176,17 @@ src/
 - Middleware de autenticação (mock)
 - Tratamento global de erros e logs estruturados
 - Testes automatizados (unitários e integração)
+
+## 🚀 Tecnologias Utilizadas
+
+- **Node.js**
+- **TypeScript**
+- **Express**
+- **Firebase Admin SDK**
+- **Firebase Functions**
+- **Zod** (validação de schemas)
+- **tsyringe** (Injeção de dependência)
+- **Pino** (logger)
+- **express-rate-limit** (rate limiting)
+- **Jest** (testes unitários e de integração)
+- **supertest** (testes de rotas HTTP)
