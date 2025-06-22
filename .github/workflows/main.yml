@@ -32,7 +32,7 @@ jobs:
       - name: Compilar Projeto TypeScript (npm run build)
         run: npm run build
         working-directory: functions/
-      
+
       - name: Compilar Projeto TypeScript (npm run build)
         run: npm prune --omit=dev
         working-directory: functions/
@@ -44,7 +44,7 @@ jobs:
 
       - name: Fazer Deploy do Cloud Function
         id: deploy-function
-        uses: google-github-actions/deploy-cloud-functions@v0
+        uses: google-github-actions/deploy-cloud-functions@v3
         with:
           name: marlimpay
           runtime: nodejs20
@@ -64,4 +64,3 @@ jobs:
         working-directory: functions/
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
