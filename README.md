@@ -18,6 +18,14 @@ MarlimPay é uma API RESTful para gerenciamento de usuários e transações fina
 
 ## 📦 Como rodar o projeto
 
+O projeto pode ser testado diretamente do firebase através da url:
+
+- ```
+   https://us-central1-marlimpay.cloudfunctions.net/api
+  ```
+
+  ou localmente:
+
 1. Navegue até o diretório functions:
 
    ```bash
