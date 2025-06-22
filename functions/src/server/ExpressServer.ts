@@ -25,7 +25,6 @@ export class ExpressServer {
     this.app.use(cors());
     this.app.use(httpLogger);
     this.app.use(helmet());
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
     this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     this.app.use(authMiddleware);
     this.app.use(this.router.run());

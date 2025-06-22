@@ -8,7 +8,7 @@ export const notFoundMiddleware = (
   try {
     const response = {
       status: 404,
-      message: `Recurso não encontrado`,
+      message: 'Recurso não encontrado',
       path: req.originalUrl,
       method: req.method,
       timestamp: new Date().toISOString(),

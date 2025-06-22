@@ -1,11 +1,7 @@
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import 'reflect-metadata';
 import request from 'supertest';
 import express from 'express';
 import { container } from 'tsyringe';
-//import { ApplicationError } from '../../errors';
 import { ITransactionRepository, IUserRepository } from '../../repositories';
 import { TOKENS } from '../../server/DISetup';
 import { TransactionHandler } from '../TransactionsHandler';
