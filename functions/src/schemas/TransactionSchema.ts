@@ -40,7 +40,9 @@ export const webhoohSchema = z.object({
   transaction_id: z
     .string({ required_error: 'transaction_id é obrigatório' })
     .min(1, 'transaction_id é obrigatório'),
-  status: z.enum(['approved', 'failed']),
+  status: z.enum(['approved', 'failed'], {
+    message: 'Status inválido! Os status possiveis são approved ou failed ',
+  }),
 });
 
 export const transactionParamsSchema = z.object({
