@@ -11,7 +11,7 @@ const mockTransactionRepository: jest.Mocked<ITransactionRepository> = {
   findIdempotency: jest.fn(),
   createTransation: jest.fn(),
   findTransactionById: jest.fn(),
-  updateTransactionStatus: jest.fn(),
+  completeTransaction: jest.fn(),
 };
 
 const mockUserRepository: jest.Mocked<IUserRepository> = {
@@ -20,7 +20,6 @@ const mockUserRepository: jest.Mocked<IUserRepository> = {
   find: jest.fn(),
   findById: jest.fn(),
   findAllTransactionsByUserId: jest.fn(),
-  updateUserBalance: jest.fn(),
 };
 
 const createTestApp = () => {

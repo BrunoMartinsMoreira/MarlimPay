@@ -16,7 +16,6 @@ const mockUserRepository: jest.Mocked<IUserRepository> = {
   find: jest.fn(),
   findById: jest.fn(),
   findAllTransactionsByUserId: jest.fn(),
-  updateUserBalance: jest.fn(),
 };
 
 const errorHandler = (
