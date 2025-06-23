@@ -50,6 +50,10 @@ O projeto pode ser testado diretamente do firebase através da url:
    ```bash
    npm run test
    ```
+5. Suba a documentação do swagge
+   ```bash
+   npm run start:docs
+   ```
 
 ---
 
