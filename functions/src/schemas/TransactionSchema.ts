@@ -49,7 +49,7 @@ export const transactionParamsSchema = z.object({
     .min(1, 'transaction_id é obrigatório'),
 });
 
-export type TransactionStatus = 'approved' | 'failed' | 'pendig';
+export type TransactionStatus = 'approved' | 'failed' | 'pending';
 
 export type CreateTransactionDTO = z.infer<typeof transactionSchema> & {
   status: TransactionStatus;

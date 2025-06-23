@@ -409,7 +409,7 @@ describe('UserHandler testes', () => {
         transaction_id: 'tx-2',
         direction: 'received',
         amount: 100,
-        status: 'pendig',
+        status: 'pending',
       },
       {
         transaction_id: 'tx-3',

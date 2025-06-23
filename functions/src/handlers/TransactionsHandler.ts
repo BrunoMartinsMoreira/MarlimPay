@@ -26,7 +26,7 @@ export class TransactionHandler {
     });
 
     const transaction = await this.transactionService.createTransaction({
-      dto: { ...createTransactionDTO, status: 'pendig' },
+      dto: { ...createTransactionDTO, status: 'pending' },
       idempotencyKey,
       userToken,
     });

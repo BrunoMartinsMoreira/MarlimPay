@@ -75,7 +75,7 @@ export class TransactionService {
       await this.transactionRepository.createTransation(
         {
           ...dto,
-          status: 'pendig',
+          status: 'pending',
         },
         idempotencyKey,
       );

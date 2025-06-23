@@ -174,7 +174,7 @@ describe('TransactionHandler Integration Tests', () => {
 
     const mockTransactionResult = {
       transaction_id: 'transaction-789',
-      status: 'pendig' as const,
+      status: 'pending' as const,
       created_at: new Date(),
     };
 
@@ -204,7 +204,7 @@ describe('TransactionHandler Integration Tests', () => {
       expect(mockTransactionRepository.createTransation).toHaveBeenCalledWith(
         {
           ...validTransactionData,
-          status: 'pendig',
+          status: 'pending',
         },
         validIdempotencyKey,
       );
