@@ -11,5 +11,4 @@ export interface IUserRepository {
   find(key: 'name' | 'email', value: string): Promise<User | null>;
   findById(user_id: string): Promise<User | null>;
   findAllTransactionsByUserId(user_id: string): Promise<ListTransactionItem[]>;
-  updateUserBalance(balance: number, user_id: string): Promise<void>;
 }

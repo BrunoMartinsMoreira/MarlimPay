@@ -13,7 +13,7 @@ interface TransactionData {
   receiver: User;
 }
 
-interface WebhookEventData {
+interface WebhookEventLogs {
   status: string;
   details: string;
 }
@@ -51,10 +51,6 @@ export class WebhookService {
       }
 
       if (transaction.status !== 'pending') return;
-      await this.transactionsRepository.updateTransactionStatus(
-        transaction_id,
-        status,
-      );
 
       const transactionData = await this.getTransactionData(transaction);
       if (!transactionData) return;
@@ -62,8 +58,8 @@ export class WebhookService {
       const handler = this.statusHandlers[status];
       if (!handler) return;
 
-      const eventData = await handler(transactionData);
-      await this.logWebhookEvent(status, transaction_id, eventData);
+      const eventLogs = await handler(transactionData);
+      await this.logWebhookEvent(status, transaction_id, eventLogs);
     } catch (error) {
       await this.logWebhookEvent(status, transaction_id, {
         status: 'error',
@@ -90,13 +86,14 @@ export class WebhookService {
   private async handleFailedTransaction({
     transaction,
     payer,
-  }: TransactionData): Promise<WebhookEventData> {
-    const { amount, payer_id } = transaction;
-
-    await this.usersRepository.updateUserBalance(
-      payer.balance + amount,
-      payer_id,
-    );
+  }: TransactionData): Promise<WebhookEventLogs> {
+    const { amount, payer_id, transaction_id } = transaction;
+    await this.transactionsRepository.completeTransaction({
+      balance: payer.balance + amount,
+      user_id: payer_id,
+      status: 'failed',
+      transaction_id,
+    });
 
     return {
       status: 'error',
@@ -107,13 +104,15 @@ export class WebhookService {
   private async handleApprovedTransaction({
     transaction,
     receiver,
-  }: TransactionData): Promise<WebhookEventData> {
-    const { amount, receiver_id } = transaction;
+  }: TransactionData): Promise<WebhookEventLogs> {
+    const { amount, receiver_id, transaction_id } = transaction;
 
-    await this.usersRepository.updateUserBalance(
-      receiver.balance + amount,
-      receiver_id,
-    );
+    await this.transactionsRepository.completeTransaction({
+      balance: receiver.balance + amount,
+      user_id: receiver_id,
+      status: 'approved',
+      transaction_id,
+    });
 
     return {
       status: 'success',
@@ -124,7 +123,7 @@ export class WebhookService {
   private async logWebhookEvent(
     status: 'approved' | 'failed',
     transactionId: string,
-    eventData: WebhookEventData,
+    eventData: WebhookEventLogs,
   ): Promise<void> {
     await this.webhookEventsRepository.create({
       status,

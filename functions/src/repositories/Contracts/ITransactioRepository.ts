@@ -5,6 +5,13 @@ import {
   Transaction,
 } from '../../schemas';
 
+export type CompleteTransactionDTO = {
+  transaction_id: string;
+  status: 'approved' | 'failed';
+  balance: number;
+  user_id: string;
+};
+
 export interface ITransactionRepository {
   createIdempotency(data: Idempotency): Promise<Idempotency>;
   findIdempotency(params: {
@@ -17,8 +24,5 @@ export interface ITransactionRepository {
     idempotencyKey: string,
   ): Promise<CreateTransactionResult>;
   findTransactionById(transaction_id: string): Promise<Transaction | null>;
-  updateTransactionStatus(
-    transaction_id: string,
-    status: 'approved' | 'failed',
-  ): Promise<void>;
+  completeTransaction(data: CompleteTransactionDTO): Promise<void>;
 }

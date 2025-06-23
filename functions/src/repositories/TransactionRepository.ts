@@ -5,7 +5,10 @@ import {
   Idempotency,
   Transaction,
 } from '../schemas';
-import { ITransactionRepository } from './Contracts/ITransactioRepository';
+import {
+  CompleteTransactionDTO,
+  ITransactionRepository,
+} from './Contracts/ITransactioRepository';
 import { getFirestore } from 'firebase-admin/firestore';
 
 @injectable()
@@ -144,5 +147,18 @@ export class TransactionRepository implements ITransactionRepository {
       .collection('transactions')
       .doc(transaction_id)
       .update({ status });
+  }
+
+  async completeTransaction(data: CompleteTransactionDTO) {
+    const { status, transaction_id, balance, user_id } = data;
+    await this.db.runTransaction(async (t) => {
+      const userRef = this.db.collection('users').doc(user_id);
+      const transactionRef = this.db
+        .collection('transactions')
+        .doc(transaction_id);
+
+      t.update(userRef, { balance });
+      t.update(transactionRef, { status });
+    });
   }
 }
