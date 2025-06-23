@@ -2,13 +2,11 @@ import 'reflect-metadata';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
-import swaggerUi from 'swagger-ui-express';
 import { Router } from '../routes';
 import { logger, httpLogger } from '../logger';
 import { globalErrorHandler, notFoundMiddleware } from '../middlewares';
 import { authMiddleware } from '../middlewares/auth';
 import { DISetup } from './DISetup';
-import swaggerDocument from '../docs/openapi.json';
 
 export class ExpressServer {
   private readonly app: express.Express;
@@ -25,7 +23,7 @@ export class ExpressServer {
     this.app.use(cors());
     this.app.use(httpLogger);
     this.app.use(helmet());
-    this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
     this.app.use(authMiddleware);
     this.app.use(this.router.run());
 
