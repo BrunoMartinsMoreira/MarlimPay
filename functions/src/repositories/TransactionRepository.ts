@@ -78,21 +78,10 @@ export class TransactionRepository implements ITransactionRepository {
       const payerRef = this.db
         .collection('users')
         .doc(transactionData.payer_id);
-      const receiverRef = this.db
-        .collection('users')
-        .doc(transactionData.receiver_id);
 
-      const [payerSnap, receiverSnap] = await Promise.all([
-        t.get(payerRef),
-        t.get(receiverRef),
-      ]);
-
+      const payerSnap = await t.get(payerRef);
       const payer = payerSnap.data();
-      const receiver = receiverSnap.data();
 
-      t.update(receiverRef, {
-        balance: receiver!.balance + transactionData.amount,
-      });
       t.update(payerRef, {
         balance: payer!.balance - transactionData.amount,
       });

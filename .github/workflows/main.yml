@@ -44,7 +44,7 @@ jobs:
 
       - name: Fazer Deploy do Cloud Function
         id: deploy-function
-        uses: google-github-actions/deploy-cloud-functions@main
+        uses: google-github-actions/deploy-cloud-functions@v1
         with:
           name: marlimpay
           runtime: nodejs20
