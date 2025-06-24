@@ -178,7 +178,7 @@ A API MarlimPay utiliza um mecanismo de rate limiting para proteger o sistema co
   ```
 - **GET** `/transactions/{transaction_id}`
   - Retorna uma transation pelo seu id
-- **POST** `/webhook`
+- **POST** `/webhook/payment-gateway`
   - BODY esperado:
   ```bash
   {
