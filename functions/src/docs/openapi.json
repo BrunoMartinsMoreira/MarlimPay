@@ -581,7 +581,7 @@
         }
       }
     },
-    "/webhook": {
+    "/webhook/payment-gateway": {
       "post": {
         "tags": ["Webhook"],
         "summary": "Atualiza o status de uma transação via webhook",

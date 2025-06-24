@@ -33,7 +33,7 @@ jobs:
         run: npm run build
         working-directory: functions/
 
-      - name: Compilar Projeto TypeScript (npm run build)
+      - name: Remover dependencias de desenvolvimento
         run: npm prune --omit=dev
         working-directory: functions/
 
