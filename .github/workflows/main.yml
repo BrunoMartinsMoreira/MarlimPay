@@ -49,7 +49,7 @@ jobs:
           name: marlimpay
           runtime: nodejs20
           project_id: marlimpay
-          source_dir: functions/lib
+          source_dir: functions/
           entry_point: api
 
       - name: Instalar Firebase CLI
