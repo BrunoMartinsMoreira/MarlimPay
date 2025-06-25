@@ -18,6 +18,11 @@ interface WebhookEventLogs {
   details: string;
 }
 
+interface GetUsersData {
+  payer: User;
+  receiver: User;
+}
+
 @injectable()
 export class WebhookService {
   constructor(
@@ -52,13 +57,20 @@ export class WebhookService {
 
       if (transaction.status !== 'pending') return;
 
-      const transactionData = await this.getTransactionData(transaction);
-      if (!transactionData) return;
+      const users = await this.getUsersData(
+        transaction.payer_id,
+        transaction.receiver_id,
+      );
+      if (!users) return;
 
       const handler = this.statusHandlers[status];
       if (!handler) return;
 
-      const eventLogs = await handler(transactionData);
+      const eventLogs = await handler({
+        transaction,
+        payer: users.payer,
+        receiver: users.receiver,
+      });
       await this.logWebhookEvent(status, transaction_id, eventLogs);
     } catch (error) {
       await this.logWebhookEvent(status, transaction_id, {
@@ -68,11 +80,10 @@ export class WebhookService {
     }
   }
 
-  private async getTransactionData(
-    transaction: Transaction,
-  ): Promise<TransactionData | null> {
-    const { payer_id, receiver_id } = transaction;
-
+  private async getUsersData(
+    payer_id: string,
+    receiver_id: string,
+  ): Promise<GetUsersData | null> {
     const [payer, receiver] = await Promise.all([
       this.usersRepository.findById(payer_id),
       this.usersRepository.findById(receiver_id),
@@ -80,7 +91,7 @@ export class WebhookService {
 
     if (!payer || !receiver) return null;
 
-    return { transaction, payer, receiver };
+    return { payer, receiver };
   }
 
   private async handleFailedTransaction({
