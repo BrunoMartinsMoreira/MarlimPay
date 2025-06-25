@@ -46,7 +46,7 @@ jobs:
         id: deploy-function
         uses: google-github-actions/deploy-cloud-functions@v1
         with:
-          name: marlimpay
+          name: api
           runtime: nodejs20
           project_id: marlimpay
           source_dir: functions/
