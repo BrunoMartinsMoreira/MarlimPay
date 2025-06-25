@@ -1,5 +1,5 @@
 import { injectable, container } from 'tsyringe';
-import { WebhookHandler } from '../handlers/WebhookHandler';
+import { WebhookHandler } from '../handlers';
 import express from 'express';
 
 @injectable()

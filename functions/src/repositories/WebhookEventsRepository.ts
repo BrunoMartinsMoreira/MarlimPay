@@ -1,7 +1,7 @@
 import { getFirestore } from 'firebase-admin/firestore';
 import { injectable, singleton } from 'tsyringe';
 import { WebhookEvent } from '../schemas';
-import { IWebhookEventsRepository } from './Contracts/IWebhookEventsRepository';
+import { IWebhookEventsRepository } from '.';
 
 @injectable()
 @singleton()

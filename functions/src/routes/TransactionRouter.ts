@@ -1,7 +1,7 @@
 import express from 'express';
 import { TransactionHandler } from '../handlers';
 import { container } from 'tsyringe';
-import { rateLimiter } from '../middlewares/rateLimiter';
+import { rateLimiter } from '../middlewares';
 
 export class TransactionRouter {
   private readonly router = express.Router();

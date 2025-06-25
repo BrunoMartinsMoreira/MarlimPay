@@ -5,10 +5,7 @@ import {
   Idempotency,
   Transaction,
 } from '../schemas';
-import {
-  CompleteTransactionDTO,
-  ITransactionRepository,
-} from './Contracts/ITransactioRepository';
+import { CompleteTransactionDTO, ITransactionRepository } from '.';
 import { getFirestore } from 'firebase-admin/firestore';
 
 @injectable()

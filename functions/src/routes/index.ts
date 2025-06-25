@@ -1,6 +1,6 @@
 import { Router as ExpressRouter } from 'express';
-import { UsersRouter } from './UsersRouter';
 import { container } from 'tsyringe';
+import { UsersRouter } from './UsersRouter';
 import { TransactionRouter } from './TransactionRouter';
 import { WebhookRouter } from './WebhookRouter';
 

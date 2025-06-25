@@ -7,7 +7,7 @@ import {
   ListTransactionItem,
   Transaction,
 } from '../schemas';
-import { IUserRepository } from './Contracts/IUserRepository';
+import { IUserRepository } from '.';
 
 @injectable()
 @singleton()
