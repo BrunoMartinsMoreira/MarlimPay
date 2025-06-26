@@ -8,7 +8,7 @@
     "lint": "npx eslint .",
     "build": "tsc -p tsconfig.build.json",
     "build:dev": "tsc --watch",
-    "start:dev": "npm run build && firebase emulators:start --only functions",
+    "start:dev": "npm run build && firebase emulators:start",
     "start:docs": "npm run copy:swagger-ui && firebase emulators:start --only hosting",
     "deploy": "npm run build && firebase deploy --only functions",
     "deploy:hosting": "npm run copy:swagger-ui && firebase deploy --only hosting",
