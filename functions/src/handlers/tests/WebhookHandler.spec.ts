@@ -30,6 +30,7 @@ const mockTransactionRepository: jest.Mocked<ITransactionRepository> = {
 
 const mockWebhookEventsRepository: jest.Mocked<IWebhookEventsRepository> = {
   create: jest.fn(),
+  findWebhookEvents: jest.fn(),
 };
 
 const createTestApp = () => {

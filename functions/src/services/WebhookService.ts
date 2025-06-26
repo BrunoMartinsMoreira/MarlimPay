@@ -80,6 +80,10 @@ export class WebhookService {
     }
   }
 
+  async findWebhookEvents(transaction_id?: string) {
+    return this.webhookEventsRepository.findWebhookEvents(transaction_id);
+  }
+
   private async getUsersData(
     payer_id: string,
     receiver_id: string,

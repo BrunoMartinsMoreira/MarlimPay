@@ -15,4 +15,13 @@ export class WebhookHandler {
       message: 'Webhook recebido com sucesso',
     });
   }
+
+  async findWebhookEvents(req: Request, res: Response) {
+    const { transaction_id } = req.query;
+    const logs = await this.webhookService.findWebhookEvents(
+      transaction_id as string | undefined,
+    );
+
+    res.status(200).send(logs);
+  }
 }

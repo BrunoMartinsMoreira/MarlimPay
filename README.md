@@ -179,16 +179,29 @@ A API MarlimPay utiliza um mecanismo de rate limiting para proteger o sistema co
 - **GET** `/transactions/{transaction_id}`
   - Retorna uma transation pelo seu id
 - **POST** `/webhook/payment-gateway`
+
   - BODY esperado:
+
   ```bash
   {
    "transaction_id": "string",
    "status": "approved" | "failed"
   }
   ```
+
   - Atualiza o status de uma transação para `sucess`ou `failed`
   - Caso o status seja `failed` o valor e devolvido ao pagador
   - Logs salvos no `firestore`
+
+  - **GET** `/webhook/logs?transaction_id`
+  - Query params opcional:
+
+  ```bash
+   "transaction_id": "string"
+  ```
+
+  - Retorna os logs de webhook salvos no firestore
+  - Pode filtrar pelo transaction_id
 
 ## 🛠️ Funcionalidades
 

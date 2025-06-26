@@ -621,6 +621,43 @@
           }
         }
       }
+    },
+    "/webhook/logs": {
+      "get": {
+        "tags": ["Webhook"],
+        "summary": "Lista logs de processamento do webhook",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "transaction_id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID único da transação (opcional)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de logs de processamento do webhook",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WebhookEventLog"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -767,6 +804,28 @@
             "enum": ["approved", "failed"],
             "description": "Novo status da transação",
             "example": "approved"
+          }
+        }
+      },
+      "WebhookEventLog": {
+        "type": "object",
+        "required": ["transaction_id", "status"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["approved", "failed"],
+            "description": "Status da transação",
+            "example": "approved"
+          },
+          "transaction_id": {
+            "type": "string",
+            "description": "ID da transação a ser atualizada",
+            "example": "750e8400-e29b-41d4-a716-446655440002"
+          },
+          "details": {
+            "type": "string",
+            "description": "Detalhes do processamento do webhook",
+            "example": "{\"status\":\"error\",\"details\":\"Transação falhou! Valor 485.29 devolvido ao pagador payer_id - payer_name\"}"
           }
         }
       }

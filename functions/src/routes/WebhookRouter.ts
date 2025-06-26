@@ -13,8 +13,15 @@ export class WebhookRouter {
     );
   }
 
+  private get() {
+    return this.router.get('/logs', (req, res) =>
+      this.handler.findWebhookEvents(req, res),
+    );
+  }
+
   run() {
     this.post();
+    this.get();
     return this.router;
   }
 }
